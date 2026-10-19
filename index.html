@@ -4,452 +4,745 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#11152e">
-  <meta name="description" content="بوابة الطالب العراقي الذكي: تنظيم الدراسة، المواد، الواجبات، الملاحظات ومؤقت بومودورو.">
-  <title>بوابة الطالب | الطالب العراقي الذكي</title>
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="منصة الطالب العراقي لتنظيم الدراسة والمواد والمهام والمصادر الدراسية لجميع المراحل في العراق.">
+  <title>منصة الطالب العراقي</title>
 
   <style>
     :root {
-      --bg: #0b0e20;
-      --panel: #141831;
-      --panel2: #1b2040;
-      --purple: #8966ff;
-      --purple2: #6845e8;
-      --blue: #5c91ff;
-      --text: #f4f4ff;
-      --muted: #a6accb;
-      --border: rgba(255,255,255,.09);
-      --green: #55d6a1;
-      --red: #ff7387;
+      --black: #111111;
+      --dark: #202020;
+      --gray: #777777;
+      --light-gray: #f4f4f4;
+      --border: #e8e8e8;
+      --white: #ffffff;
       --radius: 18px;
+      --shadow: 0 8px 30px rgba(0,0,0,.045);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px;
+    }
 
     body {
-      margin: 0;
-      background:
-        radial-gradient(ellipse at 90% 0%, #292054 0, transparent 35%),
-        var(--bg);
-      color: var(--text);
       font-family: Tahoma, Arial, sans-serif;
+      background: #fafafa;
+      color: var(--black);
       line-height: 1.8;
-      min-height: 100vh;
     }
 
-    button, input, select, textarea { font: inherit; }
-
-    button { cursor: pointer; }
-
-    button:focus-visible, input:focus-visible,
-    select:focus-visible, textarea:focus-visible,
-    a:focus-visible {
-      outline: 2px solid var(--blue);
-      outline-offset: 3px;
+    button, input, select, textarea {
+      font: inherit;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 245px minmax(0, 1fr);
-      min-height: 100vh;
+    button, a {
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .sidebar {
-      background: rgba(14,17,39,.96);
-      border-left: 1px solid var(--border);
-      padding: 24px 16px;
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1160px, 92%);
+      margin-inline: auto;
+    }
+
+    .topbar {
       position: sticky;
       top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      z-index: 10;
+      z-index: 100;
+      background: rgba(255,255,255,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 5px 7px 27px;
+      font-size: 17px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
-    .brand-icon {
+    .brand-mark {
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
-      width: 46px;
-      height: 46px;
-      flex-shrink: 0;
-      border-radius: 15px;
-      background: linear-gradient(135deg, var(--purple), #4c77ff);
-      font-size: 24px;
-    }
-
-    .brand strong { display: block; font-size: 16px; }
-    .brand small { color: var(--muted); font-size: 11px; }
-
-    .nav-title {
-      color: #777fa6;
-      font-size: 11px;
-      padding: 10px 12px;
-    }
-
-    .nav {
-      display: grid;
-      gap: 6px;
-    }
-
-    .nav button {
-      width: 100%;
-      text-align: right;
-      padding: 12px;
-      border: 1px solid transparent;
-      color: var(--muted);
-      background: transparent;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: .2s;
-    }
-
-    .nav button:hover, .nav button.active {
-      background: linear-gradient(100deg, #29214f, #1b2348);
       color: white;
-      border-color: #51417f;
-    }
-
-    .nav button.active { box-shadow: inset -3px 0 var(--purple); }
-
-    .nav-icon { width: 24px; text-align: center; font-size: 18px; }
-
-    .sidebar-note {
-      margin-top: 28px;
-      padding: 15px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .sidebar-note strong { color: white; }
-
-    main { min-width: 0; padding: 24px clamp(14px, 3vw, 36px) 50px; }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 27px;
-    }
-
-    .topbar h2 { margin: 0; font-size: 22px; }
-    .topbar p { color: var(--muted); margin: 3px 0 0; font-size: 13px; }
-
-    .top-actions { display: flex; align-items: center; gap: 10px; }
-
-    .grade-select {
-      max-width: 190px;
-      background: var(--panel);
-      color: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .search-wrap { margin-bottom: 23px; }
-
-    .search {
-      width: 100%;
-      padding: 14px 17px;
+      background: var(--black);
       border-radius: 13px;
-      background: #171b36;
-      color: white;
-      border: 1px solid var(--border);
+      font-size: 20px;
     }
 
-    .search::placeholder, input::placeholder,
-    textarea::placeholder { color: #8389aa; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 23px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .nav-links a:hover {
+      color: #000;
+    }
+
+    .nav-cta {
+      border: 0;
+      background: var(--black);
+      color: white;
+      padding: 10px 17px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(120deg, #44328c 0%, #28265d 53%, #1b3261 100%);
-      border: 1px solid rgba(190,175,255,.18);
-      border-radius: 23px;
-      padding: clamp(23px, 4vw, 40px);
-      margin-bottom: 23px;
+      padding: 65px 0 40px;
     }
 
-    .hero::after {
-      content: "✦";
+    .hero-box {
+      background: var(--black);
+      color: white;
+      border-radius: 27px;
+      padding: clamp(27px, 6vw, 66px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-box::after {
+      content: "ع";
       position: absolute;
-      left: 5%;
-      top: -45px;
-      font-size: 190px;
-      color: rgba(255,255,255,.055);
+      left: 3%;
+      bottom: -115px;
+      font-size: 330px;
+      line-height: 1;
+      color: rgba(255,255,255,.035);
+      font-weight: 900;
       pointer-events: none;
     }
 
-    .hero-content { position: relative; z-index: 1; max-width: 610px; }
-
     .eyebrow {
-      color: #d6caff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-size: 12px;
-      font-weight: bold;
+      letter-spacing: .3px;
+      padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 30px;
+      color: #ddd;
+      margin-bottom: 22px;
     }
 
-    .hero h1 { font-size: clamp(25px, 3vw, 36px); line-height: 1.5; margin: 9px 0; }
-    .hero p { color: #e0dcff; font-size: 14px; max-width: 500px; margin: 0 0 22px; }
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5.3vw, 55px);
+      line-height: 1.45;
+      max-width: 720px;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 span {
+      color: #aaa;
+    }
+
+    .hero p {
+      color: #c7c7c7;
+      max-width: 600px;
+      font-size: 15px;
+      margin-bottom: 27px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      position: relative;
+      z-index: 1;
+    }
 
     .btn {
-      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--black);
       border-radius: 11px;
-      padding: 10px 16px;
-      background: linear-gradient(135deg, var(--purple), var(--purple2));
-      color: white;
-      font-weight: bold;
-      transition: transform .15s, opacity .15s;
+      padding: 11px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      transition: .2s;
     }
 
-    .btn:hover { transform: translateY(-1px); }
-    .btn.secondary { background: #252b4d; border: 1px solid var(--border); }
-    .btn.danger { background: #6b2b46; }
-    .btn.small { font-size: 12px; padding: 7px 11px; }
-    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-white {
+      color: var(--black);
+      background: white;
+      border-color: white;
+    }
+
+    .btn-outline {
+      color: white;
+      background: transparent;
+      border-color: #555;
+    }
+
+    .btn-dark {
+      color: white;
+      background: var(--black);
+    }
+
+    .btn-light {
+      color: var(--black);
+      background: white;
+      border-color: var(--border);
+    }
+
+    .section {
+      padding: 32px 0;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 21px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(21px, 3vw, 27px);
+      line-height: 1.5;
+    }
+
+    .section-heading p {
+      color: var(--gray);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .small-label {
+      font-size: 11px;
+      color: var(--gray);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .grade-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 17px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #dedede;
+      background: white;
+      color: var(--black);
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #555;
+      box-shadow: 0 0 0 3px rgba(0,0,0,.05);
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .grade-result {
+      margin-top: 19px;
+      padding: 17px;
+      background: var(--light-gray);
+      border-radius: 13px;
+    }
+
+    .grade-result strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .muted {
+      color: var(--gray);
+      font-size: 13px;
+    }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
-      margin-bottom: 28px;
+      margin-top: 18px;
     }
 
     .stat {
-      background: linear-gradient(145deg, var(--panel), #171b35);
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .stat-number {
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .stat-label {
+      color: var(--gray);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .subject-card {
+      padding: 20px;
+      background: white;
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 17px;
-      min-width: 0;
+      transition: .2s;
     }
 
-    .stat-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
-    .stat-icon { font-size: 22px; }
-    .stat-value { font-size: 28px; font-weight: bold; margin: 8px 0 0; }
-    .stat-label { color: var(--muted); font-size: 12px; }
-
-    .section { margin: 29px 0; scroll-margin-top: 20px; }
-    .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
-    .section-heading h2 { margin: 0; font-size: 19px; }
-    .section-heading p { color: var(--muted); margin: 3px 0 0; font-size: 12px; }
-
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-    .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
-
-    .card {
-      background: linear-gradient(145deg, var(--panel), #12162d);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 19px;
-      min-width: 0;
+    .subject-card:hover {
+      border-color: #999;
+      transform: translateY(-3px);
     }
 
-    .card h3 { font-size: 15px; margin: 0 0 8px; }
-    .card p { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
-
-    .subject-card { transition: .2s; }
-    .subject-card:hover { border-color: #7962d7; transform: translateY(-3px); }
-    .subject-symbol { font-size: 26px; margin-bottom: 10px; }
-    .subject-card .btn { margin-top: 10px; }
-
-    .progress-track {
-      height: 7px;
-      background: #292d4a;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 12px 0;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--purple), var(--blue));
-      border-radius: inherit;
-      transition: width .3s;
-    }
-
-    .muted { color: var(--muted); font-size: 12px; }
-    .form-row { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 13px; }
-    .form-row > input, .form-row > select { flex: 1 1 140px; min-width: 0; }
-
-    .field {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 10px;
-      background: #0e1229;
-      border: 1px solid var(--border);
-      color: white;
-      min-width: 0;
-    }
-
-    textarea.field { resize: vertical; min-height: 115px; }
-
-    .list { display: grid; gap: 9px; }
-
-    .list-item {
-      background: #191d39;
-      border: 1px solid var(--border);
-      padding: 12px;
+    .subject-icon {
+      width: 43px;
+      height: 43px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: #f0f0f0;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .subject-card h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .subject-card p {
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .form-stack {
+      display: grid;
       gap: 12px;
     }
 
-    .item-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .item-main > div { min-width: 0; }
-    .item-title { overflow-wrap: anywhere; }
-    .item-sub { font-size: 11px; color: var(--muted); }
-    .completed .item-title { text-decoration: line-through; color: #9298b5; }
+    .task-list, .resource-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 19px;
+    }
 
-    .check {
+    .task-item, .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      min-width: 0;
+    }
+
+    .task-check {
       width: 19px;
       height: 19px;
-      accent-color: var(--purple);
       flex-shrink: 0;
+      accent-color: #111;
+    }
+
+    .task-content, .resource-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title, .resource-title {
+      font-weight: 700;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .task-meta, .resource-meta {
+      font-size: 11px;
+      color: var(--gray);
+      margin-top: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    .task-item.done .task-title {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    .delete-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: #555;
+      border-radius: 8px;
+      padding: 6px 9px;
+      flex-shrink: 0;
+      font-size: 12px;
+    }
+
+    .delete-btn:hover {
+      background: #f1f1f1;
+      color: black;
+    }
+
+    .resource-link {
+      display: inline-block;
+      color: #333;
+      text-decoration: underline;
+      font-size: 12px;
+      margin-top: 5px;
+      overflow-wrap: anywhere;
     }
 
     .empty {
       text-align: center;
-      padding: 25px 10px;
-      color: var(--muted);
-      border: 1px dashed #383e61;
-      border-radius: 13px;
+      color: var(--gray);
       font-size: 13px;
+      padding: 24px 10px;
+      border: 1px dashed #ddd;
+      border-radius: 12px;
+      margin-top: 15px;
     }
 
-    .timer-card { text-align: center; padding: 30px 18px; }
+    .notes-panel {
+      display: grid;
+      gap: 12px;
+    }
 
-    .timer-circle {
-      width: min(220px, 65vw);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      margin: 20px auto;
+    .notes-panel textarea {
+      min-height: 180px;
+    }
+
+    .notes-status {
+      min-height: 22px;
+      color: #555;
+      font-size: 12px;
+    }
+
+    .study-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .step {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .step-num {
+      width: 31px;
+      height: 31px;
       display: grid;
       place-items: center;
-      border: 7px solid #39305f;
-      outline: 2px solid rgba(137,102,255,.18);
-      background: radial-gradient(circle, #23234d, #141831 70%);
-      box-shadow: 0 0 40px rgba(111,79,255,.12);
+      background: var(--black);
+      color: white;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .timer-time { font-size: clamp(35px, 7vw, 52px); font-weight: bold; font-variant-numeric: tabular-nums; }
-    .timer-caption { color: var(--muted); font-size: 12px; }
-    .timer-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .step h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
 
-    .schedule-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .schedule-table th, .schedule-table td { padding: 11px 8px; text-align: right; border-bottom: 1px solid var(--border); }
-    .schedule-table th { color: #c4b8ff; }
-    .schedule-table td { color: #e3e5f6; }
-
-    .resource-card { display: flex; flex-direction: column; gap: 8px; }
-    .resource-card .btn { align-self: flex-start; margin-top: auto; }
-
-    .tip-number {
-      display: inline-grid;
-      place-items: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: #30265b;
-      color: #d3c8ff;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .step p {
+      color: var(--gray);
+      font-size: 12px;
     }
 
     .notice {
-      padding: 12px 14px;
-      background: #252345;
-      border-right: 3px solid var(--purple);
-      border-radius: 9px;
-      color: #d9d7f4;
+      border-right: 3px solid #222;
+      padding: 12px 15px;
+      background: #f1f1f1;
+      color: #555;
       font-size: 12px;
-      margin-bottom: 16px;
+      border-radius: 5px 10px 10px 5px;
+      margin-top: 17px;
     }
 
-    .footer { border-top: 1px solid var(--border); padding-top: 23px; margin-top: 40px; color: var(--muted); font-size: 12px; text-align: center; }
+    footer {
+      margin-top: 45px;
+      background: #111;
+      color: white;
+      padding: 30px 0;
+    }
 
-    .hidden { display: none !important; }
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    footer p {
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .footer-brand {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .back-top {
+      border: 1px solid #555;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: white;
+      background: transparent;
+    }
+
     .toast {
       position: fixed;
       bottom: 20px;
-      right: 20px;
-      max-width: calc(100% - 40px);
-      background: #27234b;
-      border: 1px solid #61519b;
-      padding: 12px 18px;
-      border-radius: 12px;
-      z-index: 100;
-      box-shadow: 0 10px 40px #0005;
+      right: 50%;
+      transform: translate(50%, 20px);
+      background: #111;
+      color: white;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 200;
+      max-width: 90%;
+      text-align: center;
     }
 
-    .mobile-nav { display: none; }
-
-    @media (max-width: 1050px) {
-      .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .toast.show {
+      opacity: 1;
+      transform: translate(50%, 0);
     }
 
-    @media (max-width: 760px) {
-      .layout { display: block; }
-      .sidebar { display: none; }
-      main { padding: 17px 13px 100px; }
-      .topbar { align-items: flex-start; }
-      .topbar h2 { font-size: 19px; }
-      .top-actions { flex-direction: column; align-items: stretch; }
-      .grade-select { max-width: 160px; font-size: 12px; }
-      .hero { border-radius: 17px; padding: 23px 18px; }
-      .hero h1 { font-size: 25px; }
-      .stats { gap: 9px; }
-      .stat { padding: 13px; }
-      .stat-value { font-size: 24px; }
-      .grid, .grid.two { grid-template-columns: minmax(0,1fr); }
-      .section-heading h2 { font-size: 17px; }
-      .card { padding: 15px; }
-      .mobile-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        z-index: 50;
-        overflow-x: auto;
-        gap: 5px;
-        padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
-        background: rgba(12,15,34,.97);
-        border-top: 1px solid var(--border);
-        backdrop-filter: blur(16px);
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 850px) {
+      .nav-links {
+        gap: 12px;
       }
-      .mobile-nav button {
-        flex: 1 0 68px;
-        min-width: 0;
-        border: 0;
-        border-radius: 10px;
-        padding: 7px 4px;
-        background: transparent;
-        color: var(--muted);
+
+      .subject-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .study-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 92%;
+      }
+
+      .nav {
+        min-height: 66px;
+        flex-wrap: wrap;
+        padding: 10px 0;
+      }
+
+      .brand {
+        font-size: 14px;
+        gap: 8px;
+      }
+
+      .brand-mark {
+        width: 37px;
+        height: 37px;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        padding: 5px 0 2px;
+        gap: 20px;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .nav-cta {
+        padding: 9px 11px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding-top: 25px;
+      }
+
+      .hero-box {
+        border-radius: 19px;
+        padding: 27px 21px;
+      }
+
+      .hero h1 {
+        font-size: 31px;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+
+      .section {
+        padding: 23px 0;
+      }
+
+      .section-heading {
+        align-items: start;
+      }
+
+      .panel {
+        padding: 17px;
+      }
+
+      .grade-layout, .two-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .subject-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .subject-card {
+        padding: 14px;
+      }
+
+      .subject-card h3 {
+        font-size: 14px;
+      }
+
+      .stats {
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 12px 8px;
+      }
+
+      .stat-number {
+        font-size: 23px;
+      }
+
+      .stat-label {
         font-size: 10px;
       }
-      .mobile-nav button span { display: block; font-size: 19px; }
-      .mobile-nav button.active { background: #28214e; color: white; }
-      .schedule-table { font-size: 10px; }
-      .schedule-table th, .schedule-table td { padding: 8px 4px; }
-      .toast { bottom: 85px; right: 12px; }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .study-steps {
+        gap: 9px;
+      }
+
+      .step {
+        padding: 13px;
+      }
+
+      .footer-content {
+        align-items: start;
+        flex-direction: column;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -462,905 +755,750 @@
 </head>
 
 <body>
-<div class="layout">
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="العودة إلى الرئيسية">
+        <span class="brand-mark">ط</span>
+        <span>منصة الطالب العراقي</span>
+      </a>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon">🎓</div>
-      <div>
-        <strong>بوابة الطالب</strong>
-        <small>الطالب العراقي الذكي</small>
-      </div>
+      <nav class="nav-links" aria-label="القائمة الرئيسية">
+        <a href="#grades">المرحلة الدراسية</a>
+        <a href="#subjects">المواد</a>
+        <a href="#planner">خطة الدراسة</a>
+        <a href="#resources">مصادري</a>
+        <a href="#notes">ملاحظاتي</a>
+      </nav>
+
+      <a class="nav-cta" href="#planner">ابدأ التنظيم ←</a>
     </div>
+  </header>
 
-    <div class="nav-title">القائمة الرئيسية</div>
-    <nav class="nav" aria-label="القائمة الرئيسية">
-      <button class="active" data-target="home"><span class="nav-icon">⌂</span> الرئيسية</button>
-      <button data-target="subjects"><span class="nav-icon">📚</span> المواد الدراسية</button>
-      <button data-target="tasks"><span class="nav-icon">✓</span> الواجبات</button>
-      <button data-target="timer"><span class="nav-icon">◷</span> مؤقت الدراسة</button>
-      <button data-target="schedule"><span class="nav-icon">▦</span> الجدول الدراسي</button>
-      <button data-target="notes"><span class="nav-icon">📝</span> ملاحظاتي</button>
-      <button data-target="library"><span class="nav-icon">📖</span> المكتبة</button>
-      <button data-target="tips"><span class="nav-icon">💡</span> نصائح دراسية</button>
-      <button data-target="assistant"><span class="nav-icon">🤖</span> المساعد الدراسي</button>
-    </nav>
+  <main id="home">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-box">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            مساحة دراسية منظمة للطالب العراقي
+          </div>
 
-    <div class="sidebar-note">
-      <strong>💜 تذكّر</strong>
-      <p>التقدم الصغير كل يوم يصنع فرقًا كبيرًا. نظّم وقتك وابدأ بمهمة واحدة.</p>
-    </div>
-  </aside>
+          <h1>دراستك أوضح.<br><span>وخطوتك القادمة أسهل.</span></h1>
 
-  <main>
-    <header class="topbar">
-      <div>
-        <h2>أهلًا بك، أيها الطالب 👋</h2>
-        <p id="todayText">مساحتك الخاصة للتعلّم والإنجاز</p>
-      </div>
-      <div class="top-actions">
-        <label class="muted" for="grade">الصف الدراسي</label>
-        <select class="grade-select" id="grade">
-          <option value="الأول المتوسط">الأول المتوسط</option>
-          <option value="الثاني المتوسط">الثاني المتوسط</option>
-          <option value="الثالث المتوسط">الثالث المتوسط</option>
-          <option value="الرابع العلمي">الرابع العلمي</option>
-          <option value="الرابع الأدبي">الرابع الأدبي</option>
-          <option value="الخامس العلمي">الخامس العلمي</option>
-          <option value="الخامس الأدبي">الخامس الأدبي</option>
-          <option value="السادس العلمي">السادس العلمي</option>
-          <option value="السادس الأدبي">السادس الأدبي</option>
-          <option value="مرحلة أخرى">مرحلة أخرى</option>
-        </select>
-      </div>
-    </header>
+          <p>
+            نظّم واجباتك، وحدد مرحلتك الدراسية، واجمع روابط كتبك ومصادرك
+            في مكان واحد. أدوات بسيطة تساعدك على متابعة دراستك يومًا بعد يوم.
+          </p>
 
-    <div class="search-wrap">
-      <input id="globalSearch" class="search" type="search"
-        placeholder="🔎 ابحث عن مادة أو أداة أو نصيحة..." aria-label="البحث في الموقع">
-    </div>
-
-    <section id="home" class="hero">
-      <div class="hero-content">
-        <span class="eyebrow">✨ مستقبلك يبدأ من هنا</span>
-        <h1>تعلّم بذكاء،<br>وأنجز أكثر كل يوم.</h1>
-        <p>نظّم دراستك، تابع واجباتك، اكتشف طرق التعلّم الفعّالة، واجعل رحلتك الدراسية أكثر سهولة.</p>
-        <button class="btn" data-go="subjects">استكشف المواد الدراسية ←</button>
-        <button class="btn secondary" data-go="timer">ابدأ جلسة دراسة</button>
+          <div class="hero-actions">
+            <a class="btn btn-white" href="#grades">حدد مرحلتك الدراسية ←</a>
+            <a class="btn btn-outline" href="#planner">رتّب واجباتك</a>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="stats" aria-label="إحصائيات الدراسة">
-      <article class="stat">
-        <div class="stat-top"><span class="stat-label">الواجبات المكتملة</span><span class="stat-icon">✅</span></div>
-        <div class="stat-value" id="completedCount">0</div>
-        <div class="stat-label">مهمة أنجزتها</div>
-      </article>
-      <article class="stat">
-        <div class="stat-top"><span class="stat-label">الواجبات المتبقية</span><span class="stat-icon">📌</span></div>
-        <div class="stat-value" id="pendingCount">0</div>
-        <div class="stat-label">مهمة تحتاج إلى إنجاز</div>
-      </article>
-      <article class="stat">
-        <div class="stat-top"><span class="stat-label">جلسات الدراسة</span><span class="stat-icon">⏱️</span></div>
-        <div class="stat-value" id="sessionCount">0</div>
-        <div class="stat-label">جلسة مكتملة</div>
-      </article>
-      <article class="stat">
-        <div class="stat-top"><span class="stat-label">الملاحظات</span><span class="stat-icon">📝</span></div>
-        <div class="stat-value" id="notesCount">0</div>
-        <div class="stat-label">ملاحظة محفوظة</div>
-      </article>
+    <section class="section" id="grades">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>ملفي الدراسي</h2>
+            <p>اختر مرحلتك وصفك لعرض قائمة مواد مناسبة كبداية.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="grade-layout">
+            <div class="field">
+              <label for="stage">المرحلة الدراسية</label>
+              <select id="stage">
+                <option value="primary">المرحلة الابتدائية</option>
+                <option value="middle">المرحلة المتوسطة</option>
+                <option value="prep">المرحلة الإعدادية</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="grade">الصف الدراسي</label>
+              <select id="grade"></select>
+            </div>
+          </div>
+
+          <div class="grade-result">
+            <strong id="profile-title">ملفك الدراسي</strong>
+            <p class="muted" id="profile-description">
+              اختر صفك الدراسي لبدء تنظيم المواد والمهام.
+            </p>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-number" id="task-total">0</div>
+              <div class="stat-label">إجمالي المهام</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" id="task-done">0</div>
+              <div class="stat-label">المهام المكتملة</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" id="resource-total">0</div>
+              <div class="stat-label">المصادر المحفوظة</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="subjects">
-      <div class="section-heading">
-        <div>
-          <h2>📚 المواد الدراسية</h2>
-          <p>اختر مادة لبدء تنظيم دراستك.</p>
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>المواد الدراسية</h2>
+            <p>قائمة مبدئية تتغير حسب المرحلة والصف الذي اخترته.</p>
+          </div>
+        </div>
+
+        <div class="subject-grid" id="subject-grid"></div>
+
+        <div class="notice">
+          تنبيه: المواد المعروضة قائمة عامة مبدئية وليست نسخة موثقة من جدول
+          وزارة التربية لكل صف أو فرع. قد تختلف المواد والتسميات بحسب الصف
+          والفرع والتحديثات الوزارية.
         </div>
       </div>
-      <div class="grid" id="subjectsGrid">
-        <article class="card subject-card" data-search="الرياضيات جبر هندسة">
-          <div class="subject-symbol">📐</div><h3>الرياضيات</h3>
-          <p>نظّم دروسك وتمارينك الحسابية.</p>
-          <button class="btn small" data-add-subject="الرياضيات">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="اللغة العربية قواعد أدب">
-          <div class="subject-symbol">✍️</div><h3>اللغة العربية</h3>
-          <p>القواعد والأدب والتعبير.</p>
-          <button class="btn small" data-add-subject="اللغة العربية">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="اللغة الانكليزية English">
-          <div class="subject-symbol">🌍</div><h3>اللغة الإنكليزية</h3>
-          <p>المفردات والقواعد والقراءة.</p>
-          <button class="btn small" data-add-subject="اللغة الإنكليزية">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="الفيزياء علوم">
-          <div class="subject-symbol">⚛️</div><h3>الفيزياء</h3>
-          <p>القوانين والمفاهيم والمسائل.</p>
-          <button class="btn small" data-add-subject="الفيزياء">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="الكيمياء علوم">
-          <div class="subject-symbol">🧪</div><h3>الكيمياء</h3>
-          <p>التفاعلات والمعادلات والتجارب.</p>
-          <button class="btn small" data-add-subject="الكيمياء">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="الأحياء علوم">
-          <div class="subject-symbol">🧬</div><h3>الأحياء</h3>
-          <p>فهم الكائنات والأجهزة الحيوية.</p>
-          <button class="btn small" data-add-subject="الأحياء">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="الاجتماعيات تاريخ جغرافية">
-          <div class="subject-symbol">🗺️</div><h3>الاجتماعيات</h3>
-          <p>التاريخ والجغرافية والمفاهيم.</p>
-          <button class="btn small" data-add-subject="الاجتماعيات">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="الحاسوب تقنية">
-          <div class="subject-symbol">💻</div><h3>الحاسوب</h3>
-          <p>المهارات الرقمية والتقنية.</p>
-          <button class="btn small" data-add-subject="الحاسوب">أضف واجبًا</button>
-        </article>
-        <article class="card subject-card" data-search="التربية الإسلامية اسلامية">
-          <div class="subject-symbol">📖</div><h3>التربية الإسلامية</h3>
-          <p>نظّم الحفظ والمراجعة.</p>
-          <button class="btn small" data-add-subject="التربية الإسلامية">أضف واجبًا</button>
-        </article>
-      </div>
-      <p class="muted">ملاحظة: المواد المعروضة أمثلة عامة، وقد تختلف المواد والمفردات حسب الصف والفرع والمنهج المعتمد.</p>
     </section>
 
-    <section class="section" id="tasks">
-      <div class="section-heading">
-        <div><h2>✅ قائمة الواجبات</h2><p>أضف مهامك وحدد ما أنجزته.</p></div>
-      </div>
-      <div class="card">
-        <form id="taskForm">
-          <div class="form-row">
-            <input id="taskTitle" class="field" maxlength="120" placeholder="عنوان الواجب أو المهمة" required>
-            <select id="taskSubject" class="field" aria-label="مادة الواجب">
-              <option>الرياضيات</option><option>اللغة العربية</option>
-              <option>اللغة الإنكليزية</option><option>الفيزياء</option>
-              <option>الكيمياء</option><option>الأحياء</option>
-              <option>الاجتماعيات</option><option>الحاسوب</option>
-              <option>التربية الإسلامية</option><option>أخرى</option>
-            </select>
-            <input id="taskDate" class="field" type="date" aria-label="موعد التسليم">
+    <section class="section" id="planner">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>خطة الدراسة والواجبات</h2>
+            <p>أضف مهامك، وحدد مواعيدها، وعلّم عليها عند إكمالها.</p>
           </div>
-          <button class="btn" type="submit">+ إضافة الواجب</button>
-        </form>
-        <div class="progress-track"><div class="progress-fill" id="taskProgress"></div></div>
-        <p class="muted" id="taskProgressText">ابدأ بإضافة أول واجب.</p>
-        <div id="taskList" class="list"></div>
-      </div>
-    </section>
+        </div>
 
-    <section class="section" id="timer">
-      <div class="section-heading">
-        <div><h2>⏱️ مؤقت بومودورو</h2><p>ركّز لمدة محددة، ثم خذ استراحة قصيرة.</p></div>
-      </div>
-      <div class="grid two">
-        <div class="card timer-card">
-          <div class="muted" id="timerMode">جلسة تركيز</div>
-          <div class="timer-circle">
-            <div>
-              <div class="timer-time" id="timerDisplay">25:00</div>
-              <div class="timer-caption">الوقت المتبقي</div>
+        <div class="two-columns">
+          <div class="panel">
+            <h3 style="margin-bottom:15px;font-size:17px;">إضافة مهمة جديدة</h3>
+
+            <form id="task-form" class="form-stack">
+              <div class="field">
+                <label for="task-title">اسم المهمة</label>
+                <input id="task-title" maxlength="120" required
+                  placeholder="مثال: مراجعة درس الرياضيات">
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label for="task-subject">المادة</label>
+                  <select id="task-subject"></select>
+                </div>
+
+                <div class="field">
+                  <label for="task-date">تاريخ الإنجاز</label>
+                  <input id="task-date" type="date">
+                </div>
+              </div>
+
+              <button class="btn btn-dark" type="submit">＋ إضافة المهمة</button>
+            </form>
+
+            <div class="task-list" id="task-list"></div>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin-bottom:7px;font-size:17px;">طريقة دراسة مقترحة</h3>
+            <p class="muted">جرّب تقسيم وقتك إلى جلسات قصيرة تتخللها استراحات.</p>
+
+            <div class="study-steps" style="grid-template-columns:1fr 1fr;margin-top:18px;">
+              <div class="step">
+                <div class="step-num">١</div>
+                <h3>حدد الهدف</h3>
+                <p>اختر درسًا أو موضوعًا واضحًا.</p>
+              </div>
+              <div class="step">
+                <div class="step-num">٢</div>
+                <h3>ابدأ التركيز</h3>
+                <p>ادرس 25 دقيقة دون مشتتات.</p>
+              </div>
+              <div class="step">
+                <div class="step-num">٣</div>
+                <h3>خذ استراحة</h3>
+                <p>استرح 5 دقائق ثم عد للدراسة.</p>
+              </div>
+              <div class="step">
+                <div class="step-num">٤</div>
+                <h3>راجع ما تعلمت</h3>
+                <p>اختبر فهمك بأسئلة من الكتاب.</p>
+              </div>
+            </div>
+
+            <div class="notice">
+              هذه طريقة تنظيم مقترحة وليست قاعدة إلزامية؛ عدّل مدة الجلسات
+              والاستراحات بما يناسبك.
             </div>
           </div>
-          <div class="timer-controls">
-            <button class="btn" id="timerStart">▶ ابدأ</button>
-            <button class="btn secondary" id="timerReset">↺ إعادة</button>
-            <button class="btn secondary" id="timerSwitch">☕ استراحة</button>
-          </div>
-          <p class="muted" id="timerMessage">ابدأ جلسة تركيز مدتها 25 دقيقة.</p>
-        </div>
-        <div class="card">
-          <h3>كيف تعمل بومودورو؟</h3>
-          <div class="list">
-            <div class="list-item"><span>1. اختر مهمة واحدة</span><span>🎯</span></div>
-            <div class="list-item"><span>2. ركّز 25 دقيقة</span><span>📚</span></div>
-            <div class="list-item"><span>3. استرح 5 دقائق</span><span>☕</span></div>
-            <div class="list-item"><span>4. كرّر حسب حاجتك</span><span>🔁</span></div>
-          </div>
-          <p class="muted" style="margin-top:15px">يمكنك التوقف أو إعادة المؤقت في أي وقت. يعمل المؤقت أثناء بقاء الصفحة مفتوحة.</p>
         </div>
       </div>
     </section>
 
-    <section class="section" id="schedule">
-      <div class="section-heading">
-        <div><h2>🗓️ جدولي الدراسي</h2><p>أضف المواد وأوقات الدراسة المناسبة لك.</p></div>
-      </div>
-      <div class="card">
-        <form id="scheduleForm">
-          <div class="form-row">
-            <select id="scheduleDay" class="field" aria-label="اليوم">
-              <option>الأحد</option><option>الاثنين</option><option>الثلاثاء</option>
-              <option>الأربعاء</option><option>الخميس</option><option>الجمعة</option><option>السبت</option>
-            </select>
-            <input id="scheduleSubject" class="field" placeholder="المادة الدراسية" maxlength="80" required>
-            <input id="scheduleTime" class="field" type="time" required aria-label="وقت الدراسة">
+    <section class="section" id="resources">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>كتبي ومصادري</h2>
+            <p>احفظ روابط كتبك الإلكترونية وملازمك ومقاطع الشرح التي تستخدمها.</p>
           </div>
-          <button class="btn" type="submit">+ إضافة إلى الجدول</button>
-        </form>
-        <div style="overflow-x:auto;margin-top:15px">
-          <table class="schedule-table">
-            <thead><tr><th>اليوم</th><th>الوقت</th><th>المادة</th><th>حذف</th></tr></thead>
-            <tbody id="scheduleList"></tbody>
-          </table>
         </div>
-        <div id="scheduleEmpty" class="empty">لم تضف مواد إلى جدولك بعد.</div>
+
+        <div class="two-columns">
+          <div class="panel">
+            <h3 style="margin-bottom:15px;font-size:17px;">إضافة مصدر دراسي</h3>
+
+            <form id="resource-form" class="form-stack">
+              <div class="field">
+                <label for="resource-title">اسم المصدر</label>
+                <input id="resource-title" maxlength="120" required
+                  placeholder="مثال: كتاب الأحياء">
+              </div>
+
+              <div class="field">
+                <label for="resource-subject">المادة</label>
+                <select id="resource-subject"></select>
+              </div>
+
+              <div class="field">
+                <label for="resource-url">رابط المصدر</label>
+                <input id="resource-url" type="url" maxlength="1000" required
+                  placeholder="https://example.com/book.pdf">
+              </div>
+
+              <button class="btn btn-dark" type="submit">＋ حفظ المصدر</button>
+            </form>
+
+            <p class="muted" style="margin-top:12px;">
+              أضف رابطًا موثوقًا تملكه أو تستطيع الوصول إليه. لا توفر المنصة
+              ملفات كتب غير موجودة أو روابط لم يتم التحقق منها.
+            </p>
+          </div>
+
+          <div class="panel">
+            <h3 style="font-size:17px;">المصادر المحفوظة</h3>
+            <p class="muted" style="margin-top:5px;">
+              روابطك تبقى محفوظة في هذا المتصفح على هذا الجهاز.
+            </p>
+            <div class="resource-list" id="resource-list"></div>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" id="notes">
-      <div class="section-heading">
-        <div><h2>📝 ملاحظاتي الدراسية</h2><p>احتفظ بالملخصات والأفكار المهمة على جهازك.</p></div>
-      </div>
-      <div class="card">
-        <form id="noteForm">
-          <div class="form-row">
-            <input id="noteTitle" class="field" maxlength="100" placeholder="عنوان الملاحظة" required>
-            <input id="noteSubject" class="field" maxlength="80" placeholder="المادة">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>دفتر ملاحظاتي</h2>
+            <p>اكتب أهدافك اليومية أو ملخصًا قصيرًا لما تريد مراجعته.</p>
           </div>
-          <textarea id="noteContent" class="field" maxlength="10000" placeholder="اكتب ملخصك أو ملاحظاتك هنا..." required></textarea>
-          <button class="btn" type="submit" style="margin-top:12px">💾 حفظ الملاحظة</button>
-        </form>
-        <div id="notesList" class="grid two" style="margin-top:18px"></div>
-      </div>
-    </section>
-
-    <section class="section" id="library">
-      <div class="section-heading">
-        <div><h2>📖 المكتبة التعليمية</h2><p>روابط ومصادر يمكنك إضافة المواد الدراسية إليها.</p></div>
-      </div>
-      <div class="notice">
-        الكتب الرسمية والملازم والفيديوهات ينبغي أن تأتي من مصادر موثوقة، مع احترام حقوق النشر. هذه النسخة لا تحتوي على ملفات PDF جاهزة أو روابط غير متحقق منها.
-      </div>
-      <div class="grid">
-        <article class="card resource-card" data-search="كتب وزارة التربية العراقية pdf">
-          <div class="subject-symbol">📕</div>
-          <h3>الكتب المدرسية</h3>
-          <p>ابحث عن الكتب والإصدارات الرسمية المناسبة لصفك.</p>
-          <a class="btn small" href="https://moedu.gov.iq/" target="_blank" rel="noopener noreferrer">وزارة التربية العراقية ↗</a>
-        </article>
-        <article class="card resource-card" data-search="فيديوهات تعليمية يوتيوب">
-          <div class="subject-symbol">▶️</div>
-          <h3>الفيديوهات التعليمية</h3>
-          <p>ابحث عن شروحات الدروس حسب الصف والمادة.</p>
-          <a class="btn small" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">فتح يوتيوب ↗</a>
-        </article>
-        <article class="card resource-card" data-search="ملازم ملخصات دراسية">
-          <div class="subject-symbol">📒</div>
-          <h3>الملازم والملخصات</h3>
-          <p>يمكن إضافة روابط الملازم القانونية والموثوقة لاحقًا.</p>
-          <button class="btn small" data-go="assistant">اعرف طريقة إضافتها</button>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="tips">
-      <div class="section-heading">
-        <div><h2>💡 نصائح دراسية عملية</h2><p>خطوات صغيرة يمكنك تطبيقها من اليوم.</p></div>
-      </div>
-      <div class="grid">
-        <article class="card" data-search="التخطيط تنظيم الوقت">
-          <span class="tip-number">01</span>
-          <h3>خطط قبل أن تبدأ</h3>
-          <p>اكتب ثلاث مهام دراسية واقعية تريد إنجازها اليوم، وابدأ بالأكثر أهمية.</p>
-          <button class="btn small" data-add-task-title="مراجعة أهم درس اليوم">حوّلها إلى واجب</button>
-        </article>
-        <article class="card" data-search="الاسترجاع النشط الحفظ">
-          <span class="tip-number">02</span>
-          <h3>اختبر نفسك</h3>
-          <p>أغلق الكتاب وحاول شرح الفكرة من ذاكرتك، ثم راجع ما نسيته.</p>
-          <button class="btn small" data-add-task-title="اختبار نفسي في درس اليوم">حوّلها إلى واجب</button>
-        </article>
-        <article class="card" data-search="المراجعة المتباعدة التكرار">
-          <span class="tip-number">03</span>
-          <h3>راجع على فترات</h3>
-          <p>وزّع المراجعة على عدة أيام بدل محاولة حفظ كل شيء في جلسة واحدة.</p>
-          <button class="btn small" data-add-task-title="مراجعة درس سابق">حوّلها إلى واجب</button>
-        </article>
-        <article class="card" data-search="النوم الراحة الصحة">
-          <span class="tip-number">04</span>
-          <h3>امنح نفسك راحة</h3>
-          <p>خذ فواصل منتظمة، واحرص على نوم كافٍ يساعدك على الانتباه والتعلّم.</p>
-          <button class="btn small" data-go="timer">ابدأ جلسة متوازنة</button>
-        </article>
-        <article class="card" data-search="حل المسائل التطبيق">
-          <span class="tip-number">05</span>
-          <h3>طبّق ما تتعلمه</h3>
-          <p>بعد فهم القاعدة، حل أمثلة متنوعة وحاول تفسير خطوات الحل.</p>
-          <button class="btn small" data-add-task-title="حل تمارين الدرس">حوّلها إلى واجب</button>
-        </article>
-        <article class="card" data-search="المشتتات الهاتف التركيز">
-          <span class="tip-number">06</span>
-          <h3>قلّل المشتتات</h3>
-          <p>ضع الهاتف جانبًا أثناء جلسة التركيز، وأبقِ الكتب المطلوبة فقط أمامك.</p>
-          <button class="btn small" data-go="timer">ابدأ التركيز</button>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="assistant">
-      <div class="section-heading">
-        <div><h2>🤖 المساعد الدراسي</h2><p>جهّز سؤالك الدراسي بطريقة تساعدك على الحصول على شرح واضح.</p></div>
-      </div>
-      <div class="card">
-        <div class="notice">
-          هذه النسخة توفر مولّد أسئلة دراسية يعمل داخل المتصفح. لا تتصل بذكاء اصطناعي فعلي ولا ترسل الإجابات تلقائيًا إلى أي خدمة خارجية.
         </div>
-        <label class="muted" for="aiSubject">المادة الدراسية</label>
-        <select id="aiSubject" class="field" style="margin:6px 0 13px">
-          <option>الرياضيات</option><option>اللغة العربية</option>
-          <option>اللغة الإنكليزية</option><option>الفيزياء</option>
-          <option>الكيمياء</option><option>الأحياء</option>
-          <option>الاجتماعيات</option><option>التربية الإسلامية</option><option>أخرى</option>
-        </select>
-        <label class="muted" for="aiQuestion">ما الموضوع الذي تريد فهمه؟</label>
-        <textarea id="aiQuestion" class="field" maxlength="2000" style="margin:6px 0 13px" placeholder="مثال: اشرح لي المعادلات الخطية مع أمثلة مناسبة لصفّي..."></textarea>
-        <div class="form-row">
-          <button class="btn" id="makePrompt" type="button">إنشاء طلب الشرح</button>
-          <button class="btn secondary" id="copyPrompt" type="button">نسخ الطلب</button>
+
+        <div class="panel notes-panel">
+          <div class="field">
+            <label for="notes-text">ملاحظاتك الدراسية</label>
+            <textarea id="notes-text"
+              placeholder="اكتب هنا ما تريد تذكره..."></textarea>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-dark" id="save-notes" type="button">حفظ الملاحظات</button>
+            <button class="btn btn-light" id="clear-notes" type="button">مسح الملاحظات</button>
+            <span class="notes-status" id="notes-status" aria-live="polite"></span>
+          </div>
         </div>
-        <textarea id="aiOutput" class="field" readonly placeholder="سيظهر طلبك الدراسي هنا..." aria-label="نص الطلب الدراسي"></textarea>
-        <p class="muted">يمكنك نسخ الطلب واستخدامه في خدمة ذكاء اصطناعي تختارها. تحقّق من الحلول، خصوصًا في المسائل العلمية.</p>
       </div>
     </section>
 
-    <footer class="footer">
-      <div>🎓 بوابة الطالب العراقي الذكي</div>
-      <p>أداة تعليمية لتنظيم الدراسة. تحقّق من الكتب والمفردات الرسمية وفق صفك وسنتك الدراسية.</p>
-      <p>تُحفظ بياناتك محليًا في المتصفح على هذا الجهاز.</p>
-    </footer>
+    <section class="section" id="study-method">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>خطوات تساعدك على الاستمرار</h2>
+            <p>عادات عملية بسيطة يمكنك تطبيقها في دراستك اليومية.</p>
+          </div>
+        </div>
+
+        <div class="study-steps">
+          <div class="step">
+            <div class="step-num">١</div>
+            <h3>ابدأ بالأهم</h3>
+            <p>رتّب واجباتك بحسب موعدها وصعوبتها.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">٢</div>
+            <h3>افهم قبل الحفظ</h3>
+            <p>اقرأ الفكرة وحاول شرحها بكلماتك.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">٣</div>
+            <h3>حلّ بنفسك</h3>
+            <p>تدرّب على الأسئلة قبل النظر إلى الحل.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">٤</div>
+            <h3>راجع باستمرار</h3>
+            <p>خصص وقتًا للعودة إلى الدروس السابقة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-</div>
 
-<nav class="mobile-nav" aria-label="التنقل السريع">
-  <button class="active" data-target="home"><span>⌂</span>الرئيسية</button>
-  <button data-target="subjects"><span>📚</span>المواد</button>
-  <button data-target="tasks"><span>✓</span>الواجبات</button>
-  <button data-target="timer"><span>⏱️</span>المؤقت</button>
-  <button data-target="notes"><span>📝</span>الملاحظات</button>
-  <button data-target="library"><span>📖</span>المكتبة</button>
-</nav>
-
-<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-
-<script>
-"use strict";
-
-/* ==========================================
-   بوابة الطالب العراقي - إدارة بيانات الموقع
-   ========================================== */
-
-const $ = (selector) => document.querySelector(selector);
-const $$ = (selector) => [...document.querySelectorAll(selector)];
-
-const KEYS = {
-  tasks: "studentPortal.tasks.v1",
-  notes: "studentPortal.notes.v1",
-  schedule: "studentPortal.schedule.v1",
-  sessions: "studentPortal.sessions.v1",
-  grade: "studentPortal.grade.v1"
-};
-
-function loadData(key, fallback) {
-  try {
-    const value = localStorage.getItem(key);
-    return value === null ? fallback : JSON.parse(value);
-  } catch (error) {
-    console.warn("تعذرت قراءة البيانات المحفوظة:", error);
-    return fallback;
-  }
-}
-
-function saveData(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  } catch (error) {
-    showToast("تعذر الحفظ. تحقق من مساحة المتصفح وإعداداته.");
-    return false;
-  }
-}
-
-let tasks = loadData(KEYS.tasks, []);
-let notes = loadData(KEYS.notes, []);
-let schedule = loadData(KEYS.schedule, []);
-let sessions = loadData(KEYS.sessions, 0);
-
-if (!Array.isArray(tasks)) tasks = [];
-if (!Array.isArray(notes)) notes = [];
-if (!Array.isArray(schedule)) schedule = [];
-if (!Number.isFinite(sessions)) sessions = 0;
-
-let toastTimeout;
-
-function showToast(message) {
-  const toast = $("#toast");
-  toast.textContent = message;
-  toast.classList.remove("hidden");
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => toast.classList.add("hidden"), 2800);
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function makeId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
-}
-
-function saveTasks() { saveData(KEYS.tasks, tasks); }
-function saveNotes() { saveData(KEYS.notes, notes); }
-function saveSchedule() { saveData(KEYS.schedule, schedule); }
-
-function updateStats() {
-  const completed = tasks.filter(task => task.done).length;
-  const pending = tasks.length - completed;
-
-  $("#completedCount").textContent = completed;
-  $("#pendingCount").textContent = pending;
-  $("#sessionCount").textContent = sessions;
-  $("#notesCount").textContent = notes.length;
-
-  const percentage = tasks.length ? Math.round(completed / tasks.length * 100) : 0;
-  $("#taskProgress").style.width = percentage + "%";
-  $("#taskProgressText").textContent = tasks.length
-    ? `أنجزت ${completed} من ${tasks.length} واجبًا (${percentage}%).`
-    : "ابدأ بإضافة أول واجب.";
-}
-
-function renderTasks() {
-  const list = $("#taskList");
-
-  if (!tasks.length) {
-    list.innerHTML = '<div class="empty">لا توجد واجبات حتى الآن. أضف أول مهمة لتبدأ.</div>';
-    updateStats();
-    return;
-  }
-
-  list.innerHTML = tasks.map(task => `
-    <div class="list-item ${task.done ? "completed" : ""}">
-      <div class="item-main">
-        <input class="check" type="checkbox" data-task-check="${escapeHTML(task.id)}"
-          ${task.done ? "checked" : ""} aria-label="تحديد اكتمال الواجب">
-        <div>
-          <div class="item-title">${escapeHTML(task.title)}</div>
-          <div class="item-sub">${escapeHTML(task.subject || "أخرى")}${task.date ? " • موعد التسليم: " + escapeHTML(task.date) : ""}</div>
-        </div>
+  <footer>
+    <div class="container footer-content">
+      <div>
+        <div class="footer-brand">منصة الطالب العراقي</div>
+        <p>مساحة بسيطة لتنظيم الدراسة والمهام والمصادر.</p>
+        <p style="margin-top:7px;">© <span id="year"></span> منصة الطالب العراقي</p>
       </div>
-      <button class="btn danger small" data-task-delete="${escapeHTML(task.id)}" aria-label="حذف الواجب">حذف</button>
+      <a class="back-top" href="#home">العودة إلى الأعلى ↑</a>
     </div>
-  `).join("");
-
-  updateStats();
-}
-
-function addTask(title, subject = "أخرى", date = "") {
-  title = String(title).trim();
-
-  if (!title) {
-    showToast("اكتب عنوان الواجب أولًا.");
-    return;
-  }
-
-  tasks.unshift({
-    id: makeId(),
-    title: title.slice(0, 120),
-    subject: String(subject).slice(0, 80),
-    date,
-    done: false
-  });
-
-  saveTasks();
-  renderTasks();
-  showToast("تمت إضافة الواجب بنجاح.");
-}
-
-$("#taskForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  addTask(
-    $("#taskTitle").value,
-    $("#taskSubject").value,
-    $("#taskDate").value
-  );
-
-  $("#taskTitle").value = "";
-  $("#taskDate").value = "";
-});
-
-$("#taskList").addEventListener("change", event => {
-  const id = event.target.dataset.taskCheck;
-  if (!id) return;
-
-  const task = tasks.find(item => item.id === id);
-  if (!task) return;
-
-  task.done = event.target.checked;
-  saveTasks();
-  renderTasks();
-});
-
-$("#taskList").addEventListener("click", event => {
-  const button = event.target.closest("[data-task-delete]");
-  if (!button) return;
-
-  tasks = tasks.filter(task => task.id !== button.dataset.taskDelete);
-  saveTasks();
-  renderTasks();
-  showToast("تم حذف الواجب.");
-});
-
-/* اختيار مادة من بطاقات الصفحة الرئيسية */
-
-$$("[data-add-subject]").forEach(button => {
-  button.addEventListener("click", () => {
-    $("#taskSubject").value = button.dataset.addSubject;
-    goTo("tasks");
-    $("#taskTitle").focus();
-  });
-});
-
-$$("[data-add-task-title]").forEach(button => {
-  button.addEventListener("click", () => {
-    addTask(button.dataset.addTaskTitle, "أخرى");
-    goTo("tasks");
-  });
-});
-
-/* الجدول الدراسي */
-
-const dayOrder = [
-  "الأحد", "الاثنين", "الثلاثاء", "الأربعاء",
-  "الخميس", "الجمعة", "السبت"
-];
-
-function renderSchedule() {
-  const body = $("#scheduleList");
-
-  const sorted = [...schedule].sort((a, b) =>
-    dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day) ||
-    a.time.localeCompare(b.time)
-  );
-
-  body.innerHTML = sorted.map(item => `
-    <tr>
-      <td>${escapeHTML(item.day)}</td>
-      <td>${escapeHTML(item.time)}</td>
-      <td>${escapeHTML(item.subject)}</td>
-      <td><button class="btn danger small" data-schedule-delete="${escapeHTML(item.id)}">حذف</button></td>
-    </tr>
-  `).join("");
-
-  $("#scheduleEmpty").classList.toggle("hidden", schedule.length > 0);
-}
-
-$("#scheduleForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  schedule.push({
-    id: makeId(),
-    day: $("#scheduleDay").value,
-    subject: $("#scheduleSubject").value.trim().slice(0, 80),
-    time: $("#scheduleTime").value
-  });
-
-  saveSchedule();
-  renderSchedule();
-  $("#scheduleSubject").value = "";
-  $("#scheduleTime").value = "";
-  showToast("تم تحديث جدولك الدراسي.");
-});
-
-$("#scheduleList").addEventListener("click", event => {
-  const button = event.target.closest("[data-schedule-delete]");
-  if (!button) return;
-
-  schedule = schedule.filter(item => item.id !== button.dataset.scheduleDelete);
-  saveSchedule();
-  renderSchedule();
-  showToast("تم حذف الموعد.");
-});
-
-/* الملاحظات الدراسية */
-
-function renderNotes() {
-  const container = $("#notesList");
-
-  if (!notes.length) {
-    container.innerHTML = '<div class="empty">ستظهر ملاحظاتك هنا بعد حفظ أول ملاحظة.</div>';
-    updateStats();
-    return;
-  }
-
-  container.innerHTML = notes.map(note => `
-    <article class="card">
-      <h3>${escapeHTML(note.title)}</h3>
-      <div class="muted">${escapeHTML(note.subject || "ملاحظة عامة")}</div>
-      <p style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:12px">${escapeHTML(note.content)}</p>
-      <button class="btn danger small" data-note-delete="${escapeHTML(note.id)}">حذف الملاحظة</button>
-    </article>
-  `).join("");
-
-  updateStats();
-}
-
-$("#noteForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  notes.unshift({
-    id: makeId(),
-    title: $("#noteTitle").value.trim().slice(0, 100),
-    subject: $("#noteSubject").value.trim().slice(0, 80),
-    content: $("#noteContent").value.trim().slice(0, 10000),
-    createdAt: new Date().toISOString()
-  });
-
-  saveNotes();
-  renderNotes();
-  $("#noteForm").reset();
-  showToast("حُفظت الملاحظة على جهازك.");
-});
-
-$("#notesList").addEventListener("click", event => {
-  const button = event.target.closest("[data-note-delete]");
-  if (!button) return;
-
-  notes = notes.filter(note => note.id !== button.dataset.noteDelete);
-  saveNotes();
-  renderNotes();
-  showToast("تم حذف الملاحظة.");
-});
-
-/* مؤقت بومودورو */
-
-const FOCUS_SECONDS = 25 * 60;
-const BREAK_SECONDS = 5 * 60;
-
-let timerSeconds = FOCUS_SECONDS;
-let timerRunning = false;
-let timerMode = "focus";
-let timerEnd = null;
-let timerInterval = null;
-
-function formatTime(seconds) {
-  const safe = Math.max(0, seconds);
-  const minutes = Math.floor(safe / 60);
-  const remainingSeconds = safe % 60;
-
-  return String(minutes).padStart(2, "0") + ":" +
-    String(remainingSeconds).padStart(2, "0");
-}
-
-function renderTimer() {
-  $("#timerDisplay").textContent = formatTime(timerSeconds);
-  $("#timerMode").textContent = timerMode === "focus" ? "جلسة تركيز" : "وقت الاستراحة";
-  $("#timerStart").textContent = timerRunning ? "⏸ إيقاف مؤقت" : "▶ ابدأ";
-  document.title = timerRunning
-    ? formatTime(timerSeconds) + " | بوابة الطالب"
-    : "بوابة الطالب | الطالب العراقي الذكي";
-}
-
-function stopTimer() {
-  timerRunning = false;
-  timerEnd = null;
-  if (timerInterval !== null) clearInterval(timerInterval);
-  timerInterval = null;
-  renderTimer();
-}
-
-function finishTimer() {
-  stopTimer();
-
-  if (timerMode === "focus") {
-    sessions++;
-    saveData(KEYS.sessions, sessions);
-    updateStats();
-    $("#timerMessage").textContent = "أحسنت! انتهت جلسة التركيز. خذ استراحة قصيرة.";
-    showToast("انتهت جلسة التركيز. أحسنت!");
-  } else {
-    $("#timerMessage").textContent = "انتهت الاستراحة. يمكنك العودة للدراسة.";
-    showToast("انتهت الاستراحة. استعد للتركيز.");
-  }
-
-  if ("vibrate" in navigator) navigator.vibrate(150);
-}
-
-function tickTimer() {
-  if (!timerRunning || timerEnd === null) return;
-
-  timerSeconds = Math.max(0, Math.ceil((timerEnd - Date.now()) / 1000));
-
-  if (timerSeconds <= 0) {
-    finishTimer();
-    return;
-  }
-
-  renderTimer();
-}
-
-function startTimer() {
-  if (timerRunning) {
-    stopTimer();
-    $("#timerMessage").textContent = "أُوقفت الجلسة مؤقتًا.";
-    return;
-  }
-
-  timerRunning = true;
-  timerEnd = Date.now() + timerSeconds * 1000;
-  timerInterval = setInterval(tickTimer, 250);
-  $("#timerMessage").textContent = "حافظ على تركيزك، أنت تستطيع.";
-  renderTimer();
-}
-
-function resetTimer() {
-  stopTimer();
-  timerSeconds = timerMode === "focus" ? FOCUS_SECONDS : BREAK_SECONDS;
-  $("#timerMessage").textContent = "أُعيد ضبط المؤقت.";
-  renderTimer();
-}
-
-function switchTimerMode() {
-  stopTimer();
-  timerMode = timerMode === "focus" ? "break" : "focus";
-  timerSeconds = timerMode === "focus" ? FOCUS_SECONDS : BREAK_SECONDS;
-  $("#timerMessage").textContent = timerMode === "focus"
-    ? "وقت التركيز لمدة 25 دقيقة."
-    : "استرح لمدة 5 دقائق.";
-  renderTimer();
-}
-
-$("#timerStart").addEventListener("click", startTimer);
-$("#timerReset").addEventListener("click", resetTimer);
-$("#timerSwitch").addEventListener("click", switchTimerMode);
-
-/* مساعد صياغة الأسئلة الدراسية */
-
-function buildPrompt() {
-  const grade = $("#grade").value;
-  const subject = $("#aiSubject").value;
-  const question = $("#aiQuestion").value.trim();
-
-  if (!question) {
-    showToast("اكتب الموضوع الذي تريد فهمه أولًا.");
-    $("#aiQuestion").focus();
-    return "";
-  }
-
-  return `أنت مساعد تعليمي يشرح للطلاب بأسلوب واضح ومبسط.
-
-السياق:
-- البلد: العراق.
-- الصف الدراسي: ${grade}.
-- المادة: ${subject}.
-- الموضوع المطلوب: ${question}
-
-المطلوب:
-1. اشرح الفكرة خطوة بخطوة بلغة عربية سهلة.
-2. استخدم أمثلة محلولة مناسبة لمستوى الطالب.
-3. وضح المصطلحات والقوانين المهمة.
-4. أضف ثلاثة أسئلة تدريبية مع الإجابات وشرحها.
-5. لا تفترض أن تفاصيل المنهج مؤكدة إن لم تتوفر لديك.
-6. إذا احتجت إلى نص الكتاب، اطلب من الطالب تزويدك به.
-7. ميّز بين المعلومات المؤكدة وأي معلومة تحتاج إلى تحقق.`;
-}
-
-$("#makePrompt").addEventListener("click", () => {
-  const prompt = buildPrompt();
-  if (prompt) {
-    $("#aiOutput").value = prompt;
-    showToast("تم تجهيز طلب الشرح.");
-  }
-});
-
-$("#copyPrompt").addEventListener("click", async () => {
-  const text = $("#aiOutput").value || buildPrompt();
-  if (!text) return;
-
-  $("#aiOutput").value = text;
-
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast("تم نسخ الطلب.");
-  } catch (error) {
-    $("#aiOutput").focus();
-    $("#aiOutput").select();
-    const copied = document.execCommand("copy");
-    showToast(copied
-      ? "تم نسخ الطلب."
-      : "حدد النص ثم انسخه باستخدام Ctrl+C.");
-  }
-});
-
-/* التنقل بين أقسام الموقع */
-
-function goTo(id) {
-  const section = document.getElementById(id);
-  if (!section) return;
-
-  section.scrollIntoView({ behavior: "smooth", block: "start" });
-
-  $$("[data-target]").forEach(button => {
-    button.classList.toggle("active", button.dataset.target === id);
-  });
-}
-
-$$("[data-target]").forEach(button => {
-  button.addEventListener("click", () => goTo(button.dataset.target));
-});
-
-$$("[data-go]").forEach(button => {
-  button.addEventListener("click", () => goTo(button.dataset.go));
-});
-
-/* البحث داخل البطاقات */
-
-$("#globalSearch").addEventListener("input", event => {
-  const query = event.target.value.trim().toLocaleLowerCase("ar");
-
-  $$("[data-search]").forEach(card => {
-    const text = (card.innerText + " " + (card.dataset.search || ""))
-      .toLocaleLowerCase("ar");
-
-    card.classList.toggle("hidden", query !== "" && !text.includes(query));
-  });
-
-  if (query) {
-    const first = $$("[data-search]").find(card => !card.classList.contains("hidden"));
-    if (first) {
-      // لا ننقل الطالب تلقائيًا أثناء الكتابة؛ تبقى النتائج ضمن أقسامها.
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    // أسماء المراحل والصفوف
+    const gradeData = {
+      primary: {
+        label: "المرحلة الابتدائية",
+        grades: [
+          "الأول الابتدائي",
+          "الثاني الابتدائي",
+          "الثالث الابتدائي",
+          "الرابع الابتدائي",
+          "الخامس الابتدائي",
+          "السادس الابتدائي"
+        ]
+      },
+      middle: {
+        label: "المرحلة المتوسطة",
+        grades: [
+          "الأول المتوسط",
+          "الثاني المتوسط",
+          "الثالث المتوسط"
+        ]
+      },
+      prep: {
+        label: "المرحلة الإعدادية",
+        grades: [
+          "الرابع الإعدادي",
+          "الخامس الإعدادي",
+          "السادس الإعدادي"
+        ]
+      }
+    };
+
+    // قائمة مبدئية قابلة للتعديل بحسب الصف والفرع
+    const subjectData = {
+      primary: [
+        ["اللغة العربية", "📘"],
+        ["اللغة الإنجليزية", "🔤"],
+        ["الرياضيات", "➗"],
+        ["العلوم", "🔬"],
+        ["الاجتماعيات", "🗺️"],
+        ["التربية الإسلامية", "📖"]
+      ],
+      middle: [
+        ["اللغة العربية", "📘"],
+        ["اللغة الإنجليزية", "🔤"],
+        ["الرياضيات", "➗"],
+        ["الأحياء", "🌿"],
+        ["الكيمياء", "⚗️"],
+        ["الفيزياء", "⚛️"],
+        ["الاجتماعيات", "🗺️"],
+        ["التربية الإسلامية", "📖"]
+      ],
+      prep: [
+        ["اللغة العربية", "📘"],
+        ["اللغة الإنجليزية", "🔤"],
+        ["الرياضيات", "➗"],
+        ["الأحياء", "🌿"],
+        ["الكيمياء", "⚗️"],
+        ["الفيزياء", "⚛️"],
+        ["التربية الإسلامية", "📖"]
+      ]
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    // معالجة التخزين المحلي مع التعامل مع تعطل التخزين
+    function readStore(key, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return value === null ? fallback : JSON.parse(value);
+      } catch (error) {
+        return fallback;
+      }
     }
-  }
-});
 
-/* حفظ الصف الدراسي */
+    function writeStore(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (error) {
+        showToast("تعذر الحفظ في هذا المتصفح.");
+        return false;
+      }
+    }
 
-const savedGrade = loadData(KEYS.grade, null);
-if (typeof savedGrade === "string" &&
-    [...$("#grade").options].some(option => option.value === savedGrade)) {
-  $("#grade").value = savedGrade;
-}
+    let tasks = readStore("iraqiStudentTasks", []);
+    let resources = readStore("iraqiStudentResources", []);
+    let selectedProfile = readStore("iraqiStudentProfile", {
+      stage: "primary",
+      grade: "الأول الابتدائي"
+    });
 
-$("#grade").addEventListener("change", () => {
-  saveData(KEYS.grade, $("#grade").value);
-  showToast("تم تحديث الصف الدراسي.");
-});
+    function showToast(message) {
+      const toast = $("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
 
-/* التاريخ */
+    function currentSubjects() {
+      return subjectData[$("stage").value] || subjectData.primary;
+    }
 
-function updateDate() {
-  const now = new Date();
+    function updateGradeOptions(preferredGrade) {
+      const stage = $("stage").value;
+      const grades = gradeData[stage].grades;
+      $("grade").replaceChildren();
 
-  $("#todayText").textContent = now.toLocaleDateString("ar-IQ", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  }) + " • خطّط ليومك وابدأ بخطوة صغيرة";
-}
+      grades.forEach((grade) => {
+        const option = document.createElement("option");
+        option.value = grade;
+        option.textContent = grade;
+        $("grade").appendChild(option);
+      });
 
-/* تشغيل أولي */
+      $("grade").value = grades.includes(preferredGrade)
+        ? preferredGrade
+        : grades[0];
 
-updateDate();
-renderTasks();
-renderSchedule();
-renderNotes();
-updateStats();
-renderTimer();
-</script>
+      updateProfile();
+      renderSubjects();
+      updateSubjectOptions();
+    }
+
+    function updateProfile() {
+      const stage = $("stage").value;
+      const grade = $("grade").value;
+
+      $("profile-title").textContent = grade || "ملفك الدراسي";
+      $("profile-description").textContent =
+        "المرحلة: " + gradeData[stage].label +
+        " — يمكنك الآن تنظيم واجباتك وحفظ مصادر هذا الصف.";
+
+      selectedProfile = { stage, grade };
+      writeStore("iraqiStudentProfile", selectedProfile);
+    }
+
+    function renderSubjects() {
+      const grid = $("subject-grid");
+      grid.replaceChildren();
+
+      currentSubjects().forEach(([name, icon]) => {
+        const card = document.createElement("article");
+        card.className = "subject-card";
+
+        const symbol = document.createElement("div");
+        symbol.className = "subject-icon";
+        symbol.textContent = icon;
+
+        const title = document.createElement("h3");
+        title.textContent = name;
+
+        const description = document.createElement("p");
+        description.textContent = "أضف واجباتك ومصادرك لهذه المادة.";
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn btn-light";
+        button.style.marginTop = "14px";
+        button.style.padding = "8px 11px";
+        button.textContent = "إضافة واجب";
+        button.addEventListener("click", () => {
+          $("task-subject").value = name;
+          $("task-title").value = "";
+          $("task-title").focus();
+          $("planner").scrollIntoView({ behavior: "smooth" });
+        });
+
+        card.append(symbol, title, description, button);
+        grid.appendChild(card);
+      });
+    }
+
+    function updateSubjectOptions() {
+      const subjects = currentSubjects().map(([name]) => name);
+
+      ["task-subject", "resource-subject"].forEach((id) => {
+        const select = $(id);
+        const previous = select.value;
+        select.replaceChildren();
+
+        subjects.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          select.appendChild(option);
+        });
+
+        if (subjects.includes(previous)) select.value = previous;
+
+        const other = document.createElement("option");
+        other.value = "أخرى";
+        other.textContent = "أخرى";
+        select.appendChild(other);
+      });
+    }
+
+    function updateStats() {
+      $("task-total").textContent = tasks.length;
+      $("task-done").textContent = tasks.filter((task) => task.done).length;
+      $("resource-total").textContent = resources.length;
+    }
+
+    function renderTasks() {
+      const list = $("task-list");
+      list.replaceChildren();
+
+      if (!tasks.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "لا توجد مهام بعد. أضف أول مهمة دراسية لك.";
+        list.appendChild(empty);
+        updateStats();
+        return;
+      }
+
+      tasks.forEach((task) => {
+        const item = document.createElement("div");
+        item.className = "task-item" + (task.done ? " done" : "");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "task-check";
+        checkbox.checked = task.done;
+        checkbox.setAttribute("aria-label", "تحديد المهمة كمكتملة");
+        checkbox.addEventListener("change", () => {
+          task.done = checkbox.checked;
+          writeStore("iraqiStudentTasks", tasks);
+          renderTasks();
+        });
+
+        const content = document.createElement("div");
+        content.className = "task-content";
+
+        const title = document.createElement("div");
+        title.className = "task-title";
+        title.textContent = task.title;
+
+        const meta = document.createElement("div");
+        meta.className = "task-meta";
+        meta.textContent = task.subject +
+          (task.date ? " • الموعد: " + task.date : "");
+
+        content.append(title, meta);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "delete-btn";
+        remove.textContent = "حذف";
+        remove.setAttribute("aria-label", "حذف المهمة " + task.title);
+        remove.addEventListener("click", () => {
+          tasks = tasks.filter((entry) => entry.id !== task.id);
+          writeStore("iraqiStudentTasks", tasks);
+          renderTasks();
+          showToast("تم حذف المهمة.");
+        });
+
+        item.append(checkbox, content, remove);
+        list.appendChild(item);
+      });
+
+      updateStats();
+    }
+
+    $("task-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const title = $("task-title").value.trim();
+      if (!title) return;
+
+      tasks.unshift({
+        id: Date.now().toString() + Math.random().toString(16).slice(2),
+        title,
+        subject: $("task-subject").value,
+        date: $("task-date").value,
+        done: false
+      });
+
+      if (writeStore("iraqiStudentTasks", tasks)) {
+        $("task-title").value = "";
+        $("task-date").value = "";
+        renderTasks();
+        showToast("تمت إضافة المهمة.");
+      }
+    });
+
+    function renderResources() {
+      const list = $("resource-list");
+      list.replaceChildren();
+
+      if (!resources.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "لم تحفظ أي مصدر بعد. أضف رابط كتاب أو ملزمة.";
+        list.appendChild(empty);
+        updateStats();
+        return;
+      }
+
+      resources.forEach((resource) => {
+        const item = document.createElement("div");
+        item.className = "resource-item";
+
+        const content = document.createElement("div");
+        content.className = "resource-content";
+
+        const title = document.createElement("div");
+        title.className = "resource-title";
+        title.textContent = resource.title;
+
+        const meta = document.createElement("div");
+        meta.className = "resource-meta";
+        meta.textContent = resource.subject;
+
+        const link = document.createElement("a");
+        link.className = "resource-link";
+        link.href = resource.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "فتح المصدر ↗";
+
+        content.append(title, meta, link);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "delete-btn";
+        remove.textContent = "حذف";
+        remove.setAttribute("aria-label", "حذف المصدر " + resource.title);
+        remove.addEventListener("click", () => {
+          resources = resources.filter((entry) => entry.id !== resource.id);
+          writeStore("iraqiStudentResources", resources);
+          renderResources();
+          showToast("تم حذف المصدر.");
+        });
+
+        item.append(content, remove);
+        list.appendChild(item);
+      });
+
+      updateStats();
+    }
+
+    $("resource-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const title = $("resource-title").value.trim();
+      const rawUrl = $("resource-url").value.trim();
+
+      if (!title || !rawUrl) return;
+
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(rawUrl);
+      } catch (error) {
+        showToast("تحقق من صحة الرابط.");
+        return;
+      }
+
+      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+        showToast("استخدم رابطًا يبدأ بـ https:// أو http://");
+        return;
+      }
+
+      resources.unshift({
+        id: Date.now().toString() + Math.random().toString(16).slice(2),
+        title,
+        subject: $("resource-subject").value,
+        url: parsedUrl.href
+      });
+
+      if (writeStore("iraqiStudentResources", resources)) {
+        $("resource-title").value = "";
+        $("resource-url").value = "";
+        renderResources();
+        showToast("تم حفظ المصدر.");
+      }
+    });
+
+    $("save-notes").addEventListener("click", () => {
+      const value = $("notes-text").value;
+      if (writeStore("iraqiStudentNotes", value)) {
+        $("notes-status").textContent = "تم حفظ ملاحظاتك على هذا الجهاز.";
+      }
+    });
+
+    $("clear-notes").addEventListener("click", () => {
+      if (!confirm("هل تريد مسح جميع الملاحظات المحفوظة؟")) return;
+
+      $("notes-text").value = "";
+      try {
+        localStorage.removeItem("iraqiStudentNotes");
+      } catch (error) {
+        $("notes-status").textContent = "تعذر مسح التخزين.";
+        return;
+      }
+      $("notes-status").textContent = "تم مسح الملاحظات.";
+    });
+
+    $("stage").addEventListener("change", () => {
+      updateGradeOptions();
+    });
+
+    $("grade").addEventListener("change", updateProfile);
+
+    function initialize() {
+      $("year").textContent = new Date().getFullYear();
+
+      const validStage = gradeData[selectedProfile.stage]
+        ? selectedProfile.stage
+        : "primary";
+
+      $("stage").value = validStage;
+
+      updateGradeOptions(selectedProfile.grade);
+
+      try {
+        $("notes-text").value =
+          localStorage.getItem("iraqiStudentNotes") || "";
+      } catch (error) {
+        $("notes-status").textContent =
+          "التخزين المحلي غير متاح في هذا المتصفح.";
+      }
+
+      renderTasks();
+      renderResources();
+    }
+
+    initialize();
+  </script>
 </body>
 </html>
-
-
